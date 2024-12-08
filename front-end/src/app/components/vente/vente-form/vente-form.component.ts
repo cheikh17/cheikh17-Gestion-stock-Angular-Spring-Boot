@@ -1,6 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { Vente, Stock, Employe } from '../../../models';
 
 @Component({
@@ -8,15 +13,28 @@ import { Vente, Stock, Employe } from '../../../models';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   template: `
-    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">
+    <div
+      class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50"
+    >
       <div class="bg-white rounded-lg p-6 w-full max-w-md">
         <div class="flex justify-between items-center mb-4">
           <h2 class="text-xl font-bold text-gray-900">Nouvelle Vente</h2>
           <button
             class="text-gray-400 hover:text-gray-500"
-            (click)="onCancel()">
-            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            (click)="onCancel()"
+          >
+            <svg
+              class="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
             </svg>
           </button>
         </div>
@@ -31,38 +49,53 @@ import { Vente, Stock, Employe } from '../../../models';
               formControlName="stockId"
               class="input-field"
               [class.border-red-500]="isFieldInvalid('stockId')"
-              (change)="onStockChange($event)">
+              (change)="onStockChange($event)"
+            >
               <option value="">Sélectionnez un produit</option>
               <option *ngFor="let stock of stocks" [value]="stock.id">
-                {{ stock.nomProduit }} - Stock: {{ stock.quantite }} - Prix: {{ formatCurrency(stock.prix) }}
+                {{ stock.nomProduit }} - Stock: {{ stock.quantite }} - Prix:
+                {{ stock.prix }}
               </option>
             </select>
-            <p *ngIf="isFieldInvalid('stockId')" class="mt-1 text-sm text-red-600">
+            <p
+              *ngIf="isFieldInvalid('stockId')"
+              class="mt-1 text-sm text-red-600"
+            >
               Veuillez sélectionner un produit
             </p>
           </div>
 
           <div>
-            <label for="employe" class="block text-sm font-medium text-gray-700">
+            <label
+              for="employe"
+              class="block text-sm font-medium text-gray-700"
+            >
               Employé
             </label>
             <select
               id="employe"
               formControlName="employeId"
               class="input-field"
-              [class.border-red-500]="isFieldInvalid('employeId')">
+              [class.border-red-500]="isFieldInvalid('employeId')"
+            >
               <option value="">Sélectionnez un employé</option>
               <option *ngFor="let employe of employes" [value]="employe.id">
                 {{ employe.employeNom }} {{ employe.employePrenom }}
               </option>
             </select>
-            <p *ngIf="isFieldInvalid('employeId')" class="mt-1 text-sm text-red-600">
+            <p
+              *ngIf="isFieldInvalid('employeId')"
+              class="mt-1 text-sm text-red-600"
+            >
               Veuillez sélectionner un employé
             </p>
           </div>
 
           <div>
-            <label for="quantite" class="block text-sm font-medium text-gray-700">
+            <label
+              for="quantite"
+              class="block text-sm font-medium text-gray-700"
+            >
               Quantité
             </label>
             <input
@@ -74,7 +107,10 @@ import { Vente, Stock, Employe } from '../../../models';
               min="1"
               (input)="calculateTotal()"
             />
-            <p *ngIf="isFieldInvalid('quantite')" class="mt-1 text-sm text-red-600">
+            <p
+              *ngIf="isFieldInvalid('quantite')"
+              class="mt-1 text-sm text-red-600"
+            >
               La quantité doit être supérieure à 0
             </p>
             <p *ngIf="stockInsuffisant" class="mt-1 text-sm text-red-600">
@@ -83,7 +119,10 @@ import { Vente, Stock, Employe } from '../../../models';
           </div>
 
           <div>
-            <label for="prixUnitaire" class="block text-sm font-medium text-gray-700">
+            <label
+              for="prixUnitaire"
+              class="block text-sm font-medium text-gray-700"
+            >
               Prix unitaire
             </label>
             <input
@@ -96,7 +135,10 @@ import { Vente, Stock, Employe } from '../../../models';
               step="0.01"
               (input)="calculateTotal()"
             />
-            <p *ngIf="isFieldInvalid('prixUnitaire')" class="mt-1 text-sm text-red-600">
+            <p
+              *ngIf="isFieldInvalid('prixUnitaire')"
+              class="mt-1 text-sm text-red-600"
+            >
               Le prix unitaire doit être supérieur à 0
             </p>
           </div>
@@ -106,28 +148,26 @@ import { Vente, Stock, Employe } from '../../../models';
               Montant total
             </label>
             <p class="text-lg font-semibold text-gray-900">
-              {{ formatCurrency(montantTotal) }}
+              {{ montantTotal }}
             </p>
           </div>
 
           <div class="flex justify-end space-x-3 mt-6">
-            <button
-              type="button"
-              class="btn-secondary"
-              (click)="onCancel()">
+            <button type="button" class="btn-secondary" (click)="onCancel()">
               Annuler
             </button>
             <button
               type="submit"
               class="btn-primary"
-              [disabled]="venteForm.invalid || isSubmitting || stockInsuffisant">
+              [disabled]="venteForm.invalid || isSubmitting || stockInsuffisant"
+            >
               {{ isSubmitting ? 'Enregistrement...' : 'Enregistrer' }}
             </button>
           </div>
         </form>
       </div>
     </div>
-  `
+  `,
 })
 export class VenteFormComponent implements OnInit {
   @Input() stocks: Stock[] = [];
@@ -147,7 +187,7 @@ export class VenteFormComponent implements OnInit {
       employeId: ['', [Validators.required]],
       quantite: [1, [Validators.required, Validators.min(1)]],
       prixUnitaire: [0, [Validators.required, Validators.min(0)]],
-      dateVente: [new Date(), [Validators.required]]
+      dateVente: [new Date(), [Validators.required]],
     });
   }
 
@@ -158,10 +198,6 @@ export class VenteFormComponent implements OnInit {
     });
   }
 
-  formatCurrency(amount: number): string {
-    return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(amount);
-  }
-
   isFieldInvalid(fieldName: string): boolean {
     const field = this.venteForm.get(fieldName);
     return field ? field.invalid && (field.dirty || field.touched) : false;
@@ -170,11 +206,11 @@ export class VenteFormComponent implements OnInit {
   onStockChange(event: Event): void {
     const select = event.target as HTMLSelectElement;
     const stockId = Number(select.value);
-    this.selectedStock = this.stocks.find(s => s.id === stockId) || null;
+    this.selectedStock = this.stocks.find((s) => s.id === stockId) || null;
 
     if (this.selectedStock) {
       this.venteForm.patchValue({
-        prixUnitaire: this.selectedStock.prix
+        prixUnitaire: this.selectedStock.prix,
       });
       this.verifierStock();
       this.calculateTotal();
@@ -201,12 +237,14 @@ export class VenteFormComponent implements OnInit {
 
       const vente: Vente = {
         id: 0,
-        stock: this.stocks.find(s => s.id === Number(formValue.stockId))!,
-        employe: this.employes.find(e => e.id === Number(formValue.employeId))!,
+        stock: this.stocks.find((s) => s.id === Number(formValue.stockId))!,
+        employe: this.employes.find(
+          (e) => e.id === Number(formValue.employeId)
+        )!,
         dateVente: formValue.dateVente,
         quantite: formValue.quantite,
         prixUnitaire: formValue.prixUnitaire,
-        montantTotal: this.montantTotal
+        montantTotal: this.montantTotal,
       };
 
       this.save.emit(vente);

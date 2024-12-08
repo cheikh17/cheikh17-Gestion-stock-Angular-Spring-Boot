@@ -4,7 +4,6 @@ import { VenteService, StockService, EmployeService } from '../../../services';
 import { Vente, Stock, Employe } from '../../../models';
 import { VenteFormComponent } from '../vente-form/vente-form.component';
 
-
 @Component({
   selector: 'app-vente-list',
   standalone: true,
@@ -23,12 +22,36 @@ import { VenteFormComponent } from '../vente-form/vente-form.component';
           <table class="min-w-full divide-y divide-gray-200">
             <thead>
               <tr>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Produit</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Employé</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantité</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Prix Unitaire</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Montant Total</th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Date
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Produit
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Employé
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Quantité
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Prix Unitaire
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Montant Total
+                </th>
               </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
@@ -36,11 +59,21 @@ import { VenteFormComponent } from '../vente-form/vente-form.component';
                 <td class="px-6 py-4 whitespace-nowrap">
                   {{ formatDate(vente.dateVente) }}
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap">{{ vente.stock.nomProduit }}</td>
-                <td class="px-6 py-4 whitespace-nowrap">{{ vente.employe.employeNom }}</td>
-                <td class="px-6 py-4 whitespace-nowrap">{{ vente.quantite }}</td>
-                <td class="px-6 py-4 whitespace-nowrap">{{ formatCurrency(vente.prixUnitaire) }}</td>
-                <td class="px-6 py-4 whitespace-nowrap">{{ formatCurrency(vente.montantTotal) }}</td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  {{ vente.stock.nomProduit }}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  {{ vente.employe.employeNom }}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  {{ vente.quantite }}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  {{ vente.prixUnitaire }}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  {{ vente.montantTotal }}
+                </td>
               </tr>
             </tbody>
           </table>
@@ -55,7 +88,7 @@ import { VenteFormComponent } from '../vente-form/vente-form.component';
       (save)="onSaveVente($event)"
       (cancel)="closeForm()"
     ></app-vente-form>
-  `
+  `,
 })
 export class VenteListComponent implements OnInit {
   ventes: Vente[] = [];
@@ -79,10 +112,6 @@ export class VenteListComponent implements OnInit {
     return new Date(date);
   }
 
-  formatCurrency(amount: number): string {
-    return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'FCFA' }).format(amount);
-  }
-
   loadVentes(): void {
     this.venteService.getAllVentes().subscribe({
       next: (data) => {
@@ -90,7 +119,7 @@ export class VenteListComponent implements OnInit {
       },
       error: (error) => {
         console.error('Erreur lors du chargement des ventes:', error);
-      }
+      },
     });
   }
 
@@ -101,7 +130,7 @@ export class VenteListComponent implements OnInit {
       },
       error: (error) => {
         console.error('Erreur lors du chargement des stocks:', error);
-      }
+      },
     });
   }
 
@@ -112,7 +141,7 @@ export class VenteListComponent implements OnInit {
       },
       error: (error) => {
         console.error('Erreur lors du chargement des employés:', error);
-      }
+      },
     });
   }
 
@@ -131,8 +160,8 @@ export class VenteListComponent implements OnInit {
         this.closeForm();
       },
       error: (error) => {
-        console.error('Erreur lors de l\'enregistrement:', error);
-      }
+        console.error("Erreur lors de l'enregistrement:", error);
+      },
     });
   }
 }
